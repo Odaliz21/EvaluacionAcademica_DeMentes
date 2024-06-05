@@ -1,6 +1,14 @@
-create database universidad;
-
-use universidad;
+use master
+go
+--------------------------------------------------------------------------------------------
+if DB_ID('universidad') is not null
+   drop database universidad
+go
+create database universidad
+go
+--------------------------------------------------------------------------------------------
+use universidad
+go
 
 CREATE TABLE [dbo].[estudiante] (
     [StudentID]      INT           IDENTITY (1, 1) NOT NULL,
@@ -30,7 +38,7 @@ CREATE TABLE [dbo].[matricula] (
         REFERENCES [dbo].[estudiante] ([StudentID]) ON DELETE CASCADE
 );
 
--- Inserción de datos en la tabla estudiante
+-- InserciÃ³n de datos en la tabla estudiante
 INSERT INTO estudiante (cod_est, nomb_est) VALUES 
     ('E001', 'Juan Perez'),
     ('E002', 'Maria Lopez'),
@@ -45,23 +53,23 @@ INSERT INTO estudiante (cod_est, nomb_est) VALUES
 
 go
 
--- Inserción de datos en la tabla asignatura
+-- InserciÃ³n de datos en la tabla asignatura
 INSERT INTO asignatura (cod_asignatura, nomb_asignatura, creditos) VALUES 
-    ('A001', 'Matemáticas', 4),
+    ('A001', 'Matematicas', 4),
     ('A002', 'Historia', 3),
-    ('A003', 'Programación', 5),
+    ('A003', 'Programacion', 5),
     ('A004', 'Literatura', 3),
-    ('A005', 'Física', 4),
-    ('A006', 'Química', 4),
-    ('A007', 'Biología', 4),
-    ('A008', 'Inglés', 3),
-    ('A009', 'Economía', 3),
+    ('A005', 'Fisica', 4),
+    ('A006', 'Quimica', 4),
+    ('A007', 'Biologia', 4),
+    ('A008', 'Ingles', 3),
+    ('A009', 'Economia', 3),
     ('A010', 'Arte', 2);
 
 go
 
 
--- Inserción de datos en la tabla matricula
+-- InserciÃ³n de datos en la tabla matricula
 INSERT INTO matricula (periodo, promedio, CourseID, StudentID) VALUES 
     ('2023A', 85, 1, 1),
     ('2023A', 78, 2, 1),
