@@ -37,11 +37,11 @@ BEGIN
         END TRY
         BEGIN CATCH
             ROLLBACK TRAN tranAgregar
-            SELECT CodError = 1, Mensaje = 'Error: No se ejecutó la transacción'
+            SELECT CodError = 1, Mensaje = 'Error: No se ejecutÃ³ la transacciÃ³n'
         END CATCH
     END
     ELSE
-        SELECT CodError = 1, Mensaje = 'Error: Código de Asignatura duplicado en la Asignatura'
+        SELECT CodError = 1, Mensaje = 'Error: CÃ³digo de Asignatura duplicado en la Asignatura'
 END
 GO
 
@@ -67,18 +67,18 @@ BEGIN
         END TRY
         BEGIN CATCH
             ROLLBACK TRAN tranEliminar
-            SELECT CodError = 1, Mensaje = 'Error: No se ejecutó la transacción'
+            SELECT CodError = 1, Mensaje = 'Error: No se ejecutÃ³ la transacciÃ³n'
         END CATCH
     END
     ELSE
-        SELECT CodError = 1, Mensaje = 'Error: Código de Asignatura no existe en la Asignatura'
+        SELECT CodError = 1, Mensaje = 'Error: CÃ³digo de Asignatura no existe en la Asignatura'
 END
 GO
 
 EXEC spEliminarAsignatura 'A011'
 GO
 
--- Procedimiento almacenado para actualizar información de una asignatura
+-- Procedimiento almacenado para actualizar informaciÃ³n de una asignatura
 IF OBJECT_ID('spActualizarAsignatura') IS NOT NULL
     DROP PROC spActualizarAsignatura
 GO
@@ -102,47 +102,31 @@ BEGIN
         END TRY
         BEGIN CATCH
             ROLLBACK TRAN tranActualizar
-            SELECT CodError = 1, Mensaje = 'Error: No se ejecutó la transacción'
+            SELECT CodError = 1, Mensaje = 'Error: No se ejecutÃ³ la transacciÃ³n'
         END CATCH
     END
     ELSE
-        SELECT CodError = 1, Mensaje = 'Error: Código de Asignatura no existe en la Asignatura'
+        SELECT CodError = 1, Mensaje = 'Error: CÃ³digo de Asignatura no existe en la Asignatura'
 END
 GO
 
-EXEC spActualizarAsignatura 'A011', 'Matemáticas Avanzadas', 5
+EXEC spActualizarAsignatura 'A011', 'MatemÃ¡ticas Avanzadas', 5
 GO
 
--- Procedimiento almacenado para buscar una asignatura por código
-IF OBJECT_ID('spBuscarAsignaturaPorCodigo') IS NOT NULL
-    DROP PROC spBuscarAsignaturaPorCodigo
+-- Procedimiento almacenado para buscar una asignatura por cÃ³digo
+IF OBJECT_ID('sp_BuscarAsignatura') IS NOT NULL
+    DROP PROCEDURE sp_BuscarAsignatura
 GO
-CREATE PROC spBuscarAsignaturaPorCodigo
-@CodAsignatura CHAR(4)
+
+CREATE PROCEDURE sp_BuscarAsignatura
+    @nomb_asignatura VARCHAR(50)
 AS
 BEGIN
-    -- Realiza la consulta y almacena el resultado en una tabla temporal
-    SELECT * INTO #TempAsignatura
-    FROM Asignatura
-    WHERE cod_asignatura = @CodAsignatura;
-
-    -- Verifica si se encontraron filas
-    IF (SELECT COUNT(*) FROM #TempAsignatura) > 0
-    BEGIN
-        -- Si se encontraron filas, retorna la asignatura encontrada y el mensaje de éxito
-        SELECT CodError = 0, Mensaje = 'Se encontró el código de la asignatura'
-        SELECT * FROM #TempAsignatura
-    END
-    ELSE
-    BEGIN
-        -- Si no se encontraron filas, retorna el mensaje de error
-        SELECT CodError = 1, Mensaje = 'No se encontró el código de la asignatura'
-    END
-
-    -- Limpia la tabla temporal
-    DROP TABLE #TempAsignatura
+    SELECT cod_asignatura, nomb_asignatura, creditos 
+    FROM asignatura
+    WHERE nomb_asignatura LIKE '%' + @nomb_asignatura + '%'
 END
 GO
 
-EXEC spBuscarAsignaturaPorCodigo 'A011'
+EXEC sp_BuscarAsignatura 'Matematicas'
 GO
