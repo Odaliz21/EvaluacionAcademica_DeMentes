@@ -25,16 +25,19 @@ CREATE TABLE [dbo].[asignatura] (
     PRIMARY KEY CLUSTERED ([CourseID] ASC)
 );
 
+USE universidad; -- Asegúrate de estar en la base de datos correcta
+
+-- Crear la tabla matricula
 CREATE TABLE [dbo].[matricula] (
     [EnrollmentID] INT IDENTITY (1, 1) NOT NULL,
-    [periodo]       NVARCHAR (6) NULL,
-    [promedio] 	   INT   NULL,
-    [CourseID]     INT NOT NULL,
-    [StudentID]    INT NOT NULL,
+    [periodo] NVARCHAR (6) NULL,
+    [promedio] INT NULL,
+    [CourseID] INT NOT NULL,
+    [StudentID] INT NOT NULL,
     PRIMARY KEY CLUSTERED ([EnrollmentID] ASC),
-    CONSTRAINT [FK_dbo.Enrollment_dbo.Asignatura_CourseID] FOREIGN KEY ([CourseID]) 
+    CONSTRAINT [FK_matricula_Asignatura] FOREIGN KEY ([CourseID]) 
         REFERENCES [dbo].[Asignatura] ([CourseID]) ON DELETE CASCADE,
-    CONSTRAINT [FK_dbo.matricula_dbo.estudiante_StudentID] FOREIGN KEY ([StudentID]) 
+    CONSTRAINT [FK_matricula_estudiante] FOREIGN KEY ([StudentID]) 
         REFERENCES [dbo].[estudiante] ([StudentID]) ON DELETE CASCADE
 );
 
@@ -70,9 +73,13 @@ go
 
 
 -- Inserción de datos en la tabla matricula
+-- Inserción de datos en la tabla matricula
 INSERT INTO matricula (periodo, promedio, CourseID, StudentID) VALUES 
     ('2023A', 85, 1, 1),
-    ('2023A', 78, 2, 1),
+    ('2023A', 78, 2, 1);
+go
+
+/* Datso apara agregar a matrcicual 
     ('2023A', 90, 1, 2),
     ('2023A', 82, 3, 2),
     ('2023A', 88, 1, 3),
@@ -93,4 +100,9 @@ INSERT INTO matricula (periodo, promedio, CourseID, StudentID) VALUES
     ('2023A', 80, 2, 10);
 
 go
+*/
 
+
+
+	select * from matricula
+go
